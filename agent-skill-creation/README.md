@@ -27,6 +27,7 @@ This is the standard macOS home directory where your personal files, documents, 
 
 Maybe not the most interesting Agent in the world, but if you look at the `.claude/skills` directory you'll see something interesting over time:
 
+Before asking System Buddy about webservers:
 ```bash
 ll .claude/skills | grep buddy
 drwxr-xr-x@ 3 adam  staff   96 Feb  3 12:28 buddy-check-chrome
@@ -36,6 +37,7 @@ drwxr-xr-x@ 3 adam  staff   96 Feb  3 12:20 buddy-system-status
 drwxr-xr-x@ 3 adam  staff   96 Feb  3 12:30 buddy-terminate-chrome
 ```
 
+Asking system-buddy about webservers:
 ```
 ❯ @"system-buddy (agent)" Do I have any webservers listening on any ports?
 
@@ -56,3 +58,57 @@ drwxr-xr-x@ 3 adam  staff   96 Feb  3 12:30 buddy-terminate-chrome
   └───────────────────────┴──────────────────────────┴────────────────────────────────────────┘
   No Apache, Nginx, or similar web servers are running on standard ports (80, 443, 8080, 3000).
 ```
+
+After asking:
+```bash
+ll .claude/skills | grep buddy
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:28 buddy-check-chrome
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:26 buddy-check-disk-space
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:57 buddy-check-listening-ports
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:50 buddy-home-folder
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:20 buddy-system-status
+drwxr-xr-x@  3 adam  staff   96 Feb  3 12:30 buddy-terminate-chrome
+```
+
+The agent created a new skills called `buddy-check-listening-ports`! It augmented its abilities.
+
+So, how did we do this?
+
+## Contructing the Pattern
+
+The key pillars of this pattern are:
+
+1. A Skill for creating Skills
+2. Agent instructions that bias the agent toward skill reuse and creation. 
+
+
+### A Skill to Create Skills
+
+Take a look at the [`skill-create`](.claude/skills/skill-create/) Skill. That Skill tells the agent how to create a skill and register it with the `skill-list` Skill, which the agent uses to find what Skills are available. Once the Skill is created, the Agent and any further invocations of it has that Skill available.
+
+### Bias the Agent Toward Skill Re-use and Creation
+Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) Agent definition. Here's Claude's summation of the design:
+
+> The System Buddy follows a check-first, learn-after loop:
+>
+> 1. List skills → Check what's already available via skills-list
+> 2. Run matching skills → Execute any that fulfill part/all of the request
+> 3. Plan & execute → Handle remaining work with bash commands
+> 4. Create skills → Codify any new procedures discovered into reusable skills
+>
+> The key principle: always check for existing skills before doing work, always create skills after figuring something out. This creates a virtuous cycle where the agent gets more capable with each novel request.
+
+And it does get more capable with each novel request! If you spent a few hours interacting with this agent you could build up a solid library of reusable and composable skills.
+
+## Be Mindful of what the Agent Creates
+Giving Agents the ability to extend their capabilities by authoring skills is a powerful pattern, but it is also a potentially dangerous one. Make sure you understand your Agent's tool privledges, your project permissions, and review the skills you agent creates!
+
+## Going Further
+The example in this repo is extremely minimal. You can imagine more complex scenarios.
+
+You could have a model where the active Agent uses skill composition to finish its work, but if a Skill isn't available it opens a ticket for skill creation. Another agent could come along and consume the ticket and create the ticket. This could lead to better seperation of concerns. 
+
+You can use this pattern to fasciliate what I call *"Grow, Don't Build"* where you *"grow"* an Agent to suit your needs rather than attempt to build one up front. If you combine Agent Skill Creation with giving the Agent the ability to edit itself, you can create extremely rich and complex Agents and skill libraries starting from little more than "You are a helpful agent ready to learn. For anything you learn to do, create a skill." That and a simple skill creation bootstrap can get you from nothing to a rich agent and skill library with no Big Design Up Front.
+
+There's a lot you can do with this pattern!
+
