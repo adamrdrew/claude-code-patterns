@@ -19,7 +19,7 @@ For the remainer of thi procedure we will refer to those as $skill_name and $ski
 Use the Bash tool to create .claude/skills/$skill_name and .claude/skills/$skill_name/SKILL.md
 
 ## Todo 3: Create the Contents of the Skill File
-Use the Write tool to fill .claude/skills/$skill_name/SKILL.md with the skill definitions. Skill files are Markdown with YAML frontmatter.
+Use the Edit tool to fill .claude/skills/$skill_name/SKILL.md with the skill definitions. Skill files are Markdown with YAML frontmatter.
 
 Template:
 ```
