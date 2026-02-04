@@ -55,3 +55,5 @@ Subagents that augment their own abilities by creating skills as they learn. A s
 ## 🏆 Attribution
 
 These design patterns are ones I've *"discovered."* This doesn't mean I'm the first person to think of them — likely not. But I reasoned my way into them independently. I'm happy to add links to other design patterns or variations that others have discovered.
+
+I'm also aware that these patterns resemble well-known design patterns in software engineering. What I find interesting and hopefully helpful to others is applying them specifically to Claude Code and creating reusable examples that others can try out and explore.
