@@ -261,6 +261,16 @@ You could also combine Knowledge Hooks with the Skill Discovery pattern. Have th
 
 The key insight is that hooks let you front-load work that would otherwise happen at runtime. Anything you can compute before the subagent starts is context you don't have to spend tokens fetching later.
 
+## 🚀 Use This Pattern
+
+Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
+
+```
+https://raw.githubusercontent.com/adamrdrew/claude-code-patterns/master/knowledge-hooks/teach-claude.md
+```
+
+Claude will read the instructions and configure your project with the Knowledge Hooks pattern, including the hook script, settings configuration, and a starter subagent.
+
 ## 📖 Further Reading
 
 - [Hooks reference](https://code.claude.com/docs/en/hooks) - Official Claude Code hooks documentation

@@ -152,6 +152,16 @@ The `list-skills` skill in this example is manually maintained. This is simple b
 
 You could also combine Skill Discovery with the Subagent Skill Creation pattern. A subagent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
 
+## 🚀 Use This Pattern
+
+Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
+
+```
+https://raw.githubusercontent.com/adamrdrew/claude-code-patterns/master/skill-discovery/teach-claude.md
+```
+
+Claude will read the instructions and configure your project with the Skill Discovery pattern, including the list-skills meta-skill and a starter subagent.
+
 ## 📖 Further Reading
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation

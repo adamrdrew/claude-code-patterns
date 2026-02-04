@@ -133,6 +133,16 @@ You can use this pattern to facilitate what I call *"Grow, Don't Build"* where y
 
 There's a lot you can do with this pattern!
 
+## 🚀 Use This Pattern
+
+Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
+
+```
+https://raw.githubusercontent.com/adamrdrew/claude-code-patterns/master/agent-skill-creation/teach-claude.md
+```
+
+Claude will read the instructions and configure your project with the Subagent Skill Creation pattern, including the skill-create meta-skill and a starter subagent.
+
 ## 📖 Further Reading
 
 - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Official Claude Code subagents documentation

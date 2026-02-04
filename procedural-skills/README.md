@@ -166,6 +166,16 @@ You could also use Procedural Skills for compliance-sensitive operations where y
 
 The core insight is that you can have AI flexibility and procedural predictability in the same system. You just have to be intentional about where each one applies.
 
+## 🚀 Use This Pattern
+
+Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
+
+```
+https://raw.githubusercontent.com/adamrdrew/claude-code-patterns/master/procedural-skills/teach-claude.md
+```
+
+Claude will read the instructions and configure your project with the Procedural Skills pattern, including Task tool-based skills and a starter subagent.
+
 ## 📖 Further Reading
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
