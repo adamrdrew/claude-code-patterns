@@ -1,4 +1,4 @@
-Yes, my # Procedural Skills
+# Procedural Skills
 
 In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's Task tools (TaskCreate, TaskUpdate, TaskList) to enforce execution order.
 
