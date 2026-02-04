@@ -35,30 +35,27 @@ The database is just a `database/` directory with markdown files and an `index.m
 Here's an example of storing some information:
 
 ```
-❯ @"data-buddy (agent)" Remember that my dog's name is Luna and she's a golden retriever
+❯ @"data-buddy (agent)" remember that my dog is ziggy and he is an 11 year old pit / lab / dane mix
 
-⏺ data-buddy(Store pet information)
-  ⎿  Done (8 tool uses · 9.2k tokens · 45s)
+⏺ data-buddy(Store dog info in database)
+  ⎿  Done (39 tool uses · 17.8k tokens · 70s)
 
-⏺ Done! I've stored your pet information.
-
-  Created: database/pets.md
-  Updated: database/index.md
-
-  You can ask me about your pets anytime and I'll look it up for you.
+⏺ Done! I've stored the information about Ziggy - your 11 year old pit/lab/dane mix - in the database.
+  You can ask about him anytime.
 ```
 
 And here's retrieving it later:
 
 ```
-❯ @"data-buddy (agent)" What pets do I have?
+❯ @"data-buddy (agent)" what do you know about my buddy zigg
 
-⏺ data-buddy(Retrieve pet information)
-  ⎿  Done (6 tool uses · 7.8k tokens · 32s)
+⏺ data-buddy(Retrieve Ziggy info from db)
+  ⎿  Done (31 tool uses · 15.8k tokens · 46s)
 
-⏺ According to my records, you have one pet:
+⏺ Here's what I know about Ziggy:
 
-  - **Luna** - Golden Retriever
+  - **Age**: 11 years old
+  - **Breed**: Pit / Lab / Dane mix
 ```
 
 What makes this interesting isn't what Data Buddy does, it's *how* it does it. Every operation follows a rigid procedure. When retrieving data, it doesn't just go rummaging through files. It follows a specific sequence:
@@ -152,7 +149,7 @@ Fair question. If you want determinism, why not just write a Python script?
 
 The answer is that Procedural Skills give you *constrained flexibility*. The subagent still interprets natural language, figures out which skill to use, and synthesizes results. You get the benefits of AI (natural language interface, intelligent synthesis) with the predictability of procedures (known execution paths, debuggable steps).
 
-For Data Buddy, this means users can ask questions in natural language ("What pets do I have?", "Tell me about Luna", "Do I have any dogs?") and the subagent figures out the right skill to use. But once the skill is invoked, execution is predictable.
+For Data Buddy, this means users can ask questions in natural language ("What do you know about my buddy Zigg?", "Tell me about Ziggy", "What pets do I have?") and the subagent figures out the right skill to use. But once the skill is invoked, execution is predictable.
 
 ## 🚀 Going Further
 
