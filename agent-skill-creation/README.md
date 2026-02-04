@@ -1,12 +1,12 @@
-# Subagent Skill Creation
+# 📚 Subagent Skill Creation
 
 In this pattern we define a subagent that enhances its own abilities by adding to its skill repertoire. Subagent Skill Creation lets you build subagents that learn and improve over time in a structured way. Because the subagent learns by creating skills, the solution is composable (skills can call other skills) and human-interactable (you can invoke the same skills the subagent created).
 
-## Before You Dive In
+## ⚠️ Before You Dive In
 
 This example uses concepts from **Procedural Skills** and **Skill Discovery**. You may want to review those first — not required, but it helps distinguish what's unique to this pattern versus supporting infrastructure.
 
-## About the Pattern
+## 🔍 About the Pattern
 
 At a high level the pattern is simple.
 
@@ -14,7 +14,7 @@ At a high level the pattern is simple.
 2. Instruct it to use skills to accomplish tasks
 3. Instruct it to create new skills for anything that wasn't covered by the existing library
 
-## The Example
+## 💡 The Example
 
 In this example we have a subagent called [System Buddy](.claude/agents/system-buddy.md). It helps you use, navigate, and inspect your computer via the command line. It takes high-level requests and executes commands to meet your goals. Here's an example:
 
@@ -77,18 +77,18 @@ The subagent created a new skill called `buddy-check-listening-ports`! It augmen
 
 So, how did we do this?
 
-## Constructing the Pattern
+## 🏗️ Constructing the Pattern
 
 The key pillars of this pattern are:
 
 1. A Skill for creating Skills
 2. Subagent instructions that bias the subagent toward skill reuse and creation. 
 
-### A Skill to Create Skills
+### ✨ A Skill to Create Skills
 
 Take a look at the [`skill-create`](.claude/skills/skill-create/) Skill. That Skill tells the subagent how to create a skill and register it with the `skill-list` Skill, which the subagent uses to find what Skills are available. Once the Skill is created, the subagent and any further invocations of it has that Skill available.
 
-### Bias the Subagent Toward Skill Re-use and Creation
+### 🔄 Bias the Subagent Toward Skill Re-use and Creation
 Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) subagent definition. Here's Claude's summation of the design:
 
 > The System Buddy follows a check-first, learn-after loop:
@@ -102,7 +102,7 @@ Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) subagent def
 
 And it does get more capable with each novel request! If you spent a few hours interacting with this subagent you could build up a solid library of reusable and composable skills.
 
-## Be Mindful of What the Subagent Creates
+## 👀 Be Mindful of What the Subagent Creates
 
 Giving subagents the ability to extend their capabilities by authoring skills is powerful but requires oversight.
 
@@ -120,11 +120,11 @@ Giving subagents the ability to extend their capabilities by authoring skills is
 3. Refine skill descriptions so the agent uses them appropriately
 4. Consider adding explicit constraints to `skill-create` about what skills should/shouldn't do
 
-## Plugin Considerations
+## 🔌 Plugin Considerations
 
 If you're building a plugin that uses this pattern, created skills need to be registered in your plugin's `skills/` directory and referenced appropriately. See the [Claude Code plugins documentation](https://code.claude.com/docs/en/plugins) for the current plugin structure.
 
-## Going Further
+## 🚀 Going Further
 The example in this repo is extremely minimal. You can imagine more complex scenarios.
 
 You could have a model where the active subagent uses skill composition to finish its work, but if a Skill isn't available it opens a ticket for skill creation. Another subagent could come along and consume the ticket and create the skill. This could lead to better separation of concerns.
@@ -133,7 +133,7 @@ You can use this pattern to facilitate what I call *"Grow, Don't Build"* where y
 
 There's a lot you can do with this pattern!
 
-## Further Reading
+## 📖 Further Reading
 
 - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Official Claude Code subagents documentation
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - How to create and use skills
