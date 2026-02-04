@@ -1,24 +1,24 @@
 # Skill Discovery
 
-In this pattern we give Agents the ability to discover Skills without injecting all Skills into the Agent context ahead of time.
+In this pattern we give subagents the ability to discover skills without injecting all skills into the context ahead of time.
 
-Agents run in their own context and don't inherit everything from the parent context. One of the things Agents don't receive is the list of Skill names and descriptions. This means that, by default, Agents won't know what Skills you have available.
+Subagents (custom agents defined in `.claude/agents/`) run in their own isolated context. They don't inherit everything from the parent conversation — including the list of available skill names and descriptions. By default, your subagent won't know what skills you've created.
 
-Claude Code [allows injecting Skills into the Agent context](https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents). This makes the Skills available to Agents. However, the way Claude Code does this is to inject the full Skill definitions into the Agent at invocation time. This can eat a lot of context space and use up a lot of tokens. For a few Skills it may not be an issue, but for many Skills and large Skills it can be costly and introduce noise into the context window.
+Claude Code [allows injecting skills into subagent context](https://code.claude.com/docs/en/sub-agents#preload-skills-into-subagents) via the `skills:` frontmatter field. However, this injects the **full skill definitions** at invocation time. For a few small skills, that's fine. For many skills or large skill definitions, it's costly and noisy.
 
-The Skill Discovery pattern allows you to make Skills available to Agents on-demand, without injecting them into the context.
+The Skill Discovery pattern makes skills available to subagents **on-demand**, without upfront injection.
 
 ## About the Pattern
 
 At a high level the pattern is simple.
 
-1. Create a Skill that can list the other Skills
-2. Inject the Skill lookup Skill into the Agent
-3. Tell the Agent to use the lookup Skill to find Skills
+1. Create a skill that lists other skills
+2. Inject the skill-listing skill into the subagent (via `skills:` frontmatter)
+3. Instruct the subagent to use the listing skill to discover what's available
 
 ## The Example
 
-In this example we have an Agent called [Weather Buddy](.claude/agents/weather-buddy.md). It can help you get local weather forecasts and answer questions about the weather. It uses Skill Discovery to find and invoke weather and memory Skills on-demand.
+In this example we have a subagent called [Weather Buddy](.claude/agents/weather-buddy.md). It helps you get local weather forecasts and answer questions about the weather. It uses Skill Discovery to find and invoke weather and memory skills on-demand.
 
 Here's an example of asking Weather Buddy about snow:
 
@@ -38,7 +38,7 @@ Here's an example of asking Weather Buddy about snow:
   The rest of the week looks dry with partly cloudy skies.
 ```
 
-Weather Buddy discovers and uses multiple Skills to answer this question:
+Weather Buddy discovers and uses multiple skills to answer this question:
 
 1. `list-skills` - Discovers what Skills are available
 2. `read-memory` - Checks if the user's zip code is stored
@@ -125,8 +125,29 @@ The Agent is instructed to always discover Skills first, then use only the Skill
 
 Skill Injection is simpler and works well for Agents with a small number of small Skills. Skill Discovery is more efficient when you have many Skills or large Skill definitions, since you only pay for the Skills you actually use.
 
+## A Note on Skill Injection
+
+Claude Code also supports injecting skills directly into subagents via the `skills:` frontmatter field:
+
+```yaml
+---
+name: my-agent
+skills:
+  - skill-one
+  - skill-two
+---
+```
+
+This loads the full skill content at invocation time. Use **Skill Injection** when you have a small number of small skills. Use **Skill Discovery** when you have many skills or large skill definitions — you only pay for what you use.
+
 ## Going Further
 
-The list-skills Skill in this example is manually maintained. You could automate this by having a Skill that reads the `.claude/skills` directory and generates the manifest dynamically. This would ensure the list is always up to date.
+The `list-skills` skill in this example is manually maintained. This is simple but error-prone — add a skill, forget to update the list.
 
-You could also combine Skill Discovery with the Agent Skill Creation pattern. An Agent that can both discover and create Skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
+**Automation options:**
+
+1. **Dynamic manifest** — Create a skill that reads `.claude/skills/*/SKILL.md` and generates the list at runtime
+2. **Build step** — Add a script that regenerates `list-skills` whenever skills change
+3. **Hook-based** — Use a `SessionStart` hook to rebuild the manifest
+
+You could also combine Skill Discovery with the Agent Skill Creation pattern. An agent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.

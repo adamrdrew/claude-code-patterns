@@ -1,19 +1,22 @@
 # Agent Skill Creation
 
-In this pattern we define an Agent that is able to enhance its abilities by adding to its skill repetoire. Agent Skill Creation lets us define agents that are able to learn and improve over time in a structured and intelligent way. And because the agent is learning by creating skills, it makes the solution composable (skills that call skills) and something humans can interact with as well.
+In this pattern we define a subagent that enhances its own abilities by adding to its skill repertoire. Agent Skill Creation lets you build agents that learn and improve over time in a structured way. Because the agent learns by creating skills, the solution is composable (skills can call other skills) and human-interactable (you can invoke the same skills the agent created).
 
 ## Before You Dive In
-The example project employs the Procedural Skills and Skill Discovery patterns, so you may want to give those a look before you dive into this one. You don't have to, but it might help you distinguish between what's unique to this pattern, and other patterns I employed simply to make things efficient.
+
+This example uses concepts from **Procedural Skills** and **Skill Discovery**. You may want to review those first — not required, but it helps distinguish what's unique to this pattern versus supporting infrastructure.
 
 ## About the Pattern
+
 At a high level the pattern is simple.
 
-1. Give the Agent a list of Skills
-2. Tell the Agent to use Skills to accomplish its tasks
-3. Tell the Agent to create new Skills for anything it needed to do that wasn't doable with the existing Skill library
+1. Give the subagent a list of skills
+2. Instruct it to use skills to accomplish tasks
+3. Instruct it to create new skills for anything that wasn't covered by the existing library
 
 ## The Example
-In this example we have an Agent called [System Buddy](.claude/agents/system-buddy.md). It can help you use, navigate, and inspect your computer via the command line. It takes high level requests from you and then exeecutes commands that will meet your goal. Here is an example:
+
+In this example we have a subagent called [System Buddy](.claude/agents/system-buddy.md). It helps you use, navigate, and inspect your computer via the command line. It takes high-level requests and executes commands to meet your goals. Here's an example:
 
 ```
 ❯ @"system-buddy (agent)" Where is my home folder located?
@@ -25,7 +28,7 @@ In this example we have an Agent called [System Buddy](.claude/agents/system-bud
 This is the standard macOS home directory where your personal files, documents, desktop, downloads, and application preferences are stored.  
 ```
 
-Maybe not the most interesting Agent in the world, but if you look at the `.claude/skills` directory you'll see something interesting over time:
+Maybe not the most interesting subagent in the world, but if you look at the `.claude/skills` directory you'll see something interesting over time:
 
 Before asking System Buddy about webservers:
 ```bash
@@ -99,11 +102,27 @@ Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) Agent defini
 
 And it does get more capable with each novel request! If you spent a few hours interacting with this agent you could build up a solid library of reusable and composable skills.
 
-## Be Mindful of what the Agent Creates
-Giving Agents the ability to extend their capabilities by authoring skills is a powerful pattern, but it is also a potentially dangerous one. Make sure you understand your Agent's tool privledges, your project permissions, and review the skills you agent creates!
+## Be Mindful of What the Agent Creates
+
+Giving agents the ability to extend their capabilities by authoring skills is powerful but requires oversight.
+
+**What to watch for:**
+
+- **Overly broad skills** — Skills that do too much or have vague descriptions
+- **Security concerns** — Skills that could expose sensitive data or run dangerous commands
+- **Skill sprawl** — Many similar skills that should be consolidated
+- **Incorrect procedures** — Skills that encode a suboptimal or wrong approach
+
+**Recommendations:**
+
+1. Periodically review `.claude/skills/buddy-*/SKILL.md` files
+2. Delete or consolidate skills that aren't useful
+3. Refine skill descriptions so the agent uses them appropriately
+4. Consider adding explicit constraints to `skill-create` about what skills should/shouldn't do
 
 ## Plugin Considerations
-If you were applying this pattern in a plugin you were developing you'd also need to ensure your new skills get added to `.claude-plugin/plugin.json`.
+
+If you're building a plugin that uses this pattern, created skills need to be registered in your plugin's `skills/` directory and referenced appropriately. See the [Claude Code plugins documentation](https://code.claude.com/docs/en/plugins) for the current plugin structure.
 
 ## Going Further
 The example in this repo is extremely minimal. You can imagine more complex scenarios.

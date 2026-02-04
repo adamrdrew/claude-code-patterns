@@ -2,7 +2,7 @@
   "hooks": {
     "SubagentStart": [
       {
-        "matcher": "*",
+        "matcher": "notes-buddy",
         "hooks": [
           {
             "type": "command",

@@ -1,35 +1,35 @@
 # Knowledge Hooks
 
-In this pattern we use hooks to front-load an Agent with knowledge before it runs. The Agent doesn't have to go fetch the knowledge at runtime — it's already there in the context window, ready to use.
+In this pattern we use hooks to front-load a subagent with knowledge before it runs. The subagent doesn't have to fetch knowledge at runtime — it's already in the context window, ready to use.
 
 ## The Problem This Solves
 
-It's common to need to give an Agent domain-specific information. The simplest approach is to put it directly in the Agent definition. That works, but it gets unruly and violates separation of concerns. A more flexible approach is to use Skills. But what if the knowledge is:
+It's common to need to give a subagent domain-specific information. The simplest approach is to put it directly in the agent definition (`.claude/agents/*.md`). That works, but it gets unruly and violates separation of concerns. A more flexible approach is to use skills. But what if the knowledge is:
 
 - **Dynamic** — it changes over time and needs to be fresh
 - **External** — it lives outside the project repo
 - **User-specific** — each user has their own data in their own location
 
-You *could* have the Agent fetch this information at runtime. Have a skill that reads a config file, resolves a path, reads the data. But now you're spending tokens just doing the lookup work. And it's not deterministic — the Agent might make mistakes or take a different path each time.
+You *could* have the subagent fetch this information at runtime. Have a skill that reads a config file, resolves a path, reads the data. But now you're spending tokens just doing the lookup work. And it's not deterministic — the agent might make mistakes or take a different path each time.
 
-Here's a concrete example: you want to create a personal assistant Agent that works with a database of information — contacts, projects, notes. You want it to be a plugin so others can use it. And you want users to be able to configure where their database is stored. How do you solve that cleanly?
+Here's a concrete example: you want to create a personal assistant subagent that works with a database of information — contacts, projects, notes. You want it to be a plugin so others can use it. And you want users to be able to configure where their database is stored. How do you solve that cleanly?
 
 **Hooks.**
 
-You have a config file in the project that says where the database lives. A hook fires when the Agent is invoked, reads the config, fetches the data, and injects it into the Agent's context window. The Agent starts fully informed. No fetching, no token overhead for lookups, no non-determinism.
+You have a config file in the project that says where the database lives. A hook fires when the subagent is invoked, reads the config, fetches the data, and injects it into the subagent's context window. The subagent starts fully informed. No fetching, no token overhead for lookups, no non-determinism.
 
 ## About the Pattern
 
 At a high level the pattern is simple:
 
 1. Create a config file that users edit to specify their data location
-2. Create a hook that fires when the Agent starts
+2. Create a hook that fires when the subagent starts (`SubagentStart` event)
 3. The hook reads the config, fetches the data, and outputs it
-4. The output becomes part of the Agent's context
+4. The output becomes part of the subagent's context
 
 ## The Example
 
-In this example we have an Agent called [Notes Buddy](.claude/agents/notes-buddy.md). It manages a simple notes database stored as markdown files. Users can store notes anywhere they like — the location is configurable.
+In this example we have a subagent called [Notes Buddy](.claude/agents/notes-buddy.md). It manages a simple notes database stored as markdown files. Users can store notes anywhere they like — the location is configurable.
 
 ### First Run
 
@@ -50,7 +50,7 @@ Notes Buddy detects the missing config and offers to set it up. Once configured,
 
 ### After Setup
 
-Here's the magic: when you invoke Notes Buddy after setup, a hook reads your `notes-config.yaml`, finds your notes database, reads all the notes, and injects them into the Agent's context. Notes Buddy starts the conversation already knowing everything in your notes.
+Here's the magic: when you invoke Notes Buddy after setup, a hook reads your `notes-config.yaml`, finds your notes database, reads all the notes, and injects them into the subagent's context. Notes Buddy starts the conversation already knowing everything in your notes.
 
 ```
 ❯ @"notes-buddy (agent)" What notes do I have about my trip to Japan?
@@ -71,7 +71,7 @@ Here's the magic: when you invoke Notes Buddy after setup, a hook reads your `no
   - Download offline maps
 ```
 
-Notice: **0 tool uses**. Notes Buddy didn't have to go read any files. The hook already injected all the notes into context before the Agent started. It just answered from what it already knew.
+Notice: **0 tool uses**. Notes Buddy didn't have to go read any files. The hook already injected all the notes into context before the subagent started. It just answered from what it already knew.
 
 Now let's add a note:
 
@@ -140,7 +140,8 @@ Whatever the script writes to stdout gets injected into the Agent's context. The
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/inject-notes.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/inject-notes.sh",
+            "timeout": 5000
           }
         ]
       }
@@ -149,7 +150,12 @@ Whatever the script writes to stdout gets injected into the Agent's context. The
 }
 ```
 
-The `SubagentStart` event fires when an Agent is invoked. The `matcher` ensures the hook only fires for `notes-buddy`. The `$CLAUDE_PROJECT_DIR` environment variable ensures the script path resolves correctly regardless of the current working directory.
+Key points:
+
+- **`SubagentStart`** — The event that fires when a subagent is spawned (not `AgentStart` or similar)
+- **`matcher`** — A regex pattern matching the agent name. Use `"*"` to match all agents, or a specific name like `"notes-buddy"`
+- **`$CLAUDE_PROJECT_DIR`** — Environment variable for the project root; ensures paths resolve correctly
+- **`timeout`** — Optional; milliseconds before the hook times out (default is 600000)
 
 ### Hook Input/Output Format
 
@@ -168,11 +174,11 @@ This is the tricky part that's easy to get wrong. Claude Code hooks have specifi
 }
 ```
 
-The `additionalContext` field contains the content that gets injected into the Agent's context window. It must be a properly escaped JSON string.
+The `additionalContext` field contains the content that gets injected into the subagent's context window. It must be a properly escaped JSON string.
 
 **Common Mistakes:**
 
-1. **Plain text output** — If you just `echo` content without the JSON wrapper, it won't be injected. The hook will appear to run but nothing will reach the Agent.
+1. **Plain text output** — If you just `echo` content without the JSON wrapper, it won't be injected. The hook will appear to run but nothing will reach the subagent.
 
 2. **Improper JSON escaping** — The `additionalContext` value must be a valid JSON string. Newlines become `\n`, quotes become `\"`, backslashes become `\\`. Use `jq` or a proper JSON encoder.
 
@@ -201,6 +207,18 @@ Claude Code provides useful environment variables to hook scripts:
 
 Always use `$CLAUDE_PROJECT_DIR` for paths to ensure the script works regardless of the current working directory.
 
+**Exit Codes:**
+
+Hook behavior depends on the exit code:
+
+| Exit Code | Behavior |
+|-----------|----------|
+| `0` | Success — stdout is parsed for JSON output |
+| `2` | Blocking error — for events that support blocking (like `PreToolUse`), this prevents the action |
+| Other | Non-blocking error — stderr is shown in verbose mode, execution continues |
+
+For `SubagentStart` hooks like ours, exit code 0 with proper JSON injects context. Exit code 2 would show an error but can't block agent startup.
+
 **Debugging Hooks:**
 
 If your hook isn't working:
@@ -209,6 +227,7 @@ If your hook isn't working:
 2. Log your JSON output before printing it to verify the structure
 3. Test your JSON output with `jq` to verify it's valid: `echo "$output" | jq .`
 4. Check that the `matcher` in settings.json matches your agent name exactly
+5. Run Claude Code with `claude --debug` to see hook execution details
 
 ## Knowledge Hooks vs Runtime Fetching
 
@@ -225,19 +244,19 @@ This pattern is particularly useful for plugins. Your plugin can ship with:
 
 - A config example file that users customize
 - A hook script that reads user config
-- An Agent that expects knowledge to be pre-loaded
+- A subagent that expects knowledge to be pre-loaded
 
-Users install your plugin, copy the example config, edit it once, and the hook ensures their data is always available to the Agent. No hard-coded paths, no assumptions about where user data lives.
+Users install your plugin, copy the example config, edit it once, and the hook ensures their data is always available to the subagent. No hard-coded paths, no assumptions about where user data lives.
 
 ## Going Further
 
-The hook in this example runs a bash script, but hooks can also run any executable. You could:
+The hook in this example runs a bash script, but hooks can run any executable. You could:
 
 - Write the hook in Python for more complex data processing
 - Query an API to fetch live data
 - Read from multiple sources and combine them
 - Apply transformations or filtering before injection
 
-You could also combine Knowledge Hooks with the Skill Discovery pattern. Have the hook inject a curated summary, and Skills available for when the Agent needs to dig deeper. Best of both worlds — efficient context for common cases, full access when needed.
+You could also combine Knowledge Hooks with the Skill Discovery pattern. Have the hook inject a curated summary, with skills available for when the subagent needs to dig deeper. Best of both worlds — efficient context for common cases, full access when needed.
 
-The key insight is that hooks let you front-load work that would otherwise happen at runtime. Anything you can compute before the Agent starts is context you don't have to spend tokens fetching later.
+The key insight is that hooks let you front-load work that would otherwise happen at runtime. Anything you can compute before the subagent starts is context you don't have to spend tokens fetching later.

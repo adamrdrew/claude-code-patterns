@@ -2,11 +2,11 @@
 
 ## Overview
 
-This pattern demonstrates procedural skill execution using Task tools (TaskCreate, TaskUpdate, TaskList). Skills define numbered steps that the agent executes in order, trading autonomy for determinism.
+This pattern demonstrates procedural skill execution using Task tools (`TaskCreate`, `TaskUpdate`, `TaskList`). Skills define numbered steps that the subagent executes in order, trading autonomy for determinism.
 
 ## Key Files
 
-- `.claude/agents/data-buddy.md` - Example agent that uses procedural skills
+- `.claude/agents/data-buddy.md` - Example subagent that uses procedural skills
 - `.claude/skills/skills-list/SKILL.md` - Master list of all available skills
 
 ## Skill Maintenance

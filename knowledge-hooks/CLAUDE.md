@@ -2,7 +2,7 @@
 
 ## Overview
 
-This pattern demonstrates using hooks to inject knowledge into an agent's context at invocation time. The agent receives fresh data before it starts processing, making it immediately informed without needing to fetch anything.
+This pattern demonstrates using hooks to inject knowledge into a subagent's context at invocation time. The subagent receives fresh data before it starts processing, making it immediately informed without needing to fetch anything.
 
 ## Key Files
 
