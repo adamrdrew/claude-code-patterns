@@ -162,6 +162,9 @@ https://raw.githubusercontent.com/adamrdrew/claude-code-patterns/master/skill-di
 
 Claude will read the instructions and configure your project with the Skill Discovery pattern, including the list-skills meta-skill and a starter subagent.
 
+## 🙅 Subagent Access Control
+In the example project we use one skill to list all available skills and provide it to our only subagent. If you have multiple subagents you need to decide if you want all subagents to have access to all skills, or if you want some kind of per-subagent access control. You can easily adapt the pattern by having per-subagent skill lists. You have to see what works for you and your project!
+
 ## 📖 Further Reading
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
