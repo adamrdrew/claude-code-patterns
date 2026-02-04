@@ -7,15 +7,15 @@ description: Remove a document from the database. Deletes the document file and 
 
 Remove a document from the database and update the index.
 
-Use the TodoWrite tool to create a Todo list and execute the following procedure:
+Use TaskCreate to create a task for each step below, then execute them in order. Mark each task `in_progress` when starting and `completed` when done using TaskUpdate.
 
-## Todo 1: Verify Database
+## Step 1: Verify Database
 
 Use the Skill tool to invoke the `db-verify` skill.
 
 If verification fails, STOP execution and relay the error message to the user.
 
-## Todo 2: Identify Document to Delete
+## Step 2: Identify Document to Delete
 
 Analyze the user's request to determine which document they want to delete.
 
@@ -31,7 +31,7 @@ If multiple documents could match:
 - List the matching options and ask the user to specify which one to delete.
 - STOP execution until clarified.
 
-## Todo 3: Confirm Deletion
+## Step 3: Confirm Deletion
 
 Before proceeding, confirm with the user:
 
@@ -39,13 +39,13 @@ Before proceeding, confirm with the user:
 
 Wait for user confirmation. If they decline, STOP execution.
 
-## Todo 4: Read Document for Backup Display
+## Step 4: Read Document for Backup Display
 
 Use the Read tool to read the document at `database/<topic>.md`.
 
 Display a summary of what will be deleted so the user knows what they're losing.
 
-## Todo 5: Delete Document File
+## Step 5: Delete Document File
 
 Use the Bash tool to remove the document file:
 
@@ -55,7 +55,7 @@ rm database/<topic>.md
 
 Verify the file was deleted by attempting to read it (should fail).
 
-## Todo 6: Update Index
+## Step 6: Update Index
 
 Use the Read tool to read `database/index.md`.
 
@@ -63,7 +63,7 @@ Use the Edit tool to remove the entry for the deleted document from the index.
 
 If this was the last document, add back "*No documents yet.*" under the Documents section.
 
-## Todo 7: Verify and Report
+## Step 7: Verify and Report
 
 Use the Read tool to verify:
 1. The document no longer exists

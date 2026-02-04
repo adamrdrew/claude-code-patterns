@@ -7,9 +7,9 @@ description: Initialize the database by creating the database/ directory and an 
 
 Create the database directory structure and initialize an empty index.
 
-Use the TodoWrite tool to create a Todo list and execute the following procedure:
+Use TaskCreate to create a task for each step below, then execute them in order. Mark each task `in_progress` when starting and `completed` when done using TaskUpdate.
 
-## Todo 1: Check If Already Initialized
+## Step 1: Check If Already Initialized
 
 Use the Bash tool to check if the database directory exists:
 
@@ -22,7 +22,7 @@ If the output is "EXISTS":
 - If index exists, report: "Database already initialized. No action needed."
 - STOP execution. Do not proceed to further steps.
 
-## Todo 2: Create Database Directory
+## Step 2: Create Database Directory
 
 Use the Bash tool to create the database directory:
 
@@ -30,7 +30,7 @@ Use the Bash tool to create the database directory:
 mkdir -p database
 ```
 
-## Todo 3: Create Index File
+## Step 3: Create Index File
 
 Use the Write tool to create `database/index.md` with the following content:
 
@@ -46,11 +46,11 @@ This file tracks all documents stored in the database.
 *No documents yet.*
 ```
 
-## Todo 4: Verify Initialization
+## Step 4: Verify Initialization
 
 Use the Read tool to read `database/index.md` and verify it was created correctly.
 
-## Todo 5: Report Success
+## Step 5: Report Success
 
 Report to the caller: "Database initialized successfully. The database is ready to store documents."
 

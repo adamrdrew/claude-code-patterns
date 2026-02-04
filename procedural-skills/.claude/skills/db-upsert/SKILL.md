@@ -7,9 +7,9 @@ description: Create a new document or update an existing one. If the topic alrea
 
 Create a new document or update an existing one in the database.
 
-Use the TodoWrite tool to create a Todo list and execute the following procedure:
+Use TaskCreate to create a task for each step below, then execute them in order. Mark each task `in_progress` when starting and `completed` when done using TaskUpdate.
 
-## Todo 1: Verify Database
+## Step 1: Verify Database
 
 Use the Skill tool to invoke the `db-verify` skill.
 
@@ -17,7 +17,7 @@ If verification fails:
 - Use the Skill tool to invoke `db-init` to initialize the database
 - Then proceed to the next step
 
-## Todo 2: Determine Topic and Content
+## Step 2: Determine Topic and Content
 
 Analyze the user's input to determine:
 
@@ -26,7 +26,7 @@ Analyze the user's input to determine:
 
 If the topic or content is unclear, ask the user for clarification before proceeding.
 
-## Todo 3: Check If Document Exists
+## Step 3: Check If Document Exists
 
 Use the Read tool to read `database/index.md`.
 
@@ -34,7 +34,7 @@ Search the index for an existing entry matching the topic.
 
 Note whether this is an INSERT (new document) or UPDATE (existing document).
 
-## Todo 4: Write Document
+## Step 4: Write Document
 
 Construct the document content as markdown:
 
@@ -55,7 +55,7 @@ Use the Read tool to read the existing document first.
 Merge the new information with existing content appropriately.
 Use the Write tool to update `database/<topic>.md` with the merged content.
 
-## Todo 5: Update Index
+## Step 5: Update Index
 
 **If INSERT (new document):**
 
@@ -69,7 +69,7 @@ Use the Edit tool to update the index:
 The index entry already exists. Check if the description needs updating.
 If so, use the Edit tool to update the description.
 
-## Todo 6: Verify and Report
+## Step 6: Verify and Report
 
 Use the Read tool to verify:
 1. The document exists at `database/<topic>.md`

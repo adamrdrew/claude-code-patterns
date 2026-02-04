@@ -14,7 +14,7 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 
 2. **Knowledge Hooks** (`knowledge-hooks/`) - Front-load agents with knowledge via hooks on invocation. More token-efficient and deterministic than dynamic knowledge fetching.
 
-3. **Procedural Skills** (`procedural-skills/`) - Trade autonomy for determinism. Skills execute in structured, procedural ways using TodoWrite for step-by-step execution.
+3. **Procedural Skills** (`procedural-skills/`) - Trade autonomy for determinism. Skills execute in structured, procedural ways using Task tools (TaskCreate, TaskUpdate) for step-by-step execution.
 
 4. **Skill Discovery** (`skill-discovery/`) - Dynamic skill discovery for subagents, since Claude Code subagents don't inherit parent skill manifests.
 
@@ -24,7 +24,7 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 - YAML frontmatter: `name`, `description`, `skills`, `tools`, `color`
 - Markdown body contains the agent prompt
 - `skills` array lists which skills the agent can invoke (these are injected at invocation)
-- `tools` specifies available Claude Code tools (Skill, Read, Bash, TodoWrite, Edit)
+- `tools` specifies available Claude Code tools (Skill, Read, Bash, TaskCreate, TaskUpdate, Edit)
 
 ### Skills (`.claude/skills/<skill-name>/SKILL.md`)
 - YAML frontmatter: `name`, `description`
@@ -32,15 +32,15 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 - Skills can invoke other skills via the Skill tool
 
 ### Procedural Skill Pattern
-Skills use TodoWrite with numbered steps for deterministic execution:
+Skills use Task tools with numbered steps for deterministic execution:
 ```markdown
-## Todo 1: First Step
+## Step 1: First Step
 Instructions for step 1
 
-## Todo 2: Second Step
+## Step 2: Second Step
 Instructions for step 2
 ```
-The agent creates a todo list and executes steps in order.
+The agent uses TaskCreate to create tasks for each step, then executes them in order using TaskUpdate to track progress.
 
 ### Permission Model (`.claude/settings.local.json`)
 - Root level has restricted permissions (only `echo`, `find`)

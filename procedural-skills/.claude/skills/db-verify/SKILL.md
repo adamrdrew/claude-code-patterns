@@ -7,9 +7,9 @@ description: Verify that the database exists and is properly initialized. Return
 
 Check that the database directory and index file exist and are properly structured.
 
-Use the TodoWrite tool to create a Todo list and execute the following procedure:
+Use TaskCreate to create a task for each step below, then execute them in order. Mark each task `in_progress` when starting and `completed` when done using TaskUpdate.
 
-## Todo 1: Check Database Directory
+## Step 1: Check Database Directory
 
 Use the Bash tool to check if the `database/` directory exists:
 
@@ -21,7 +21,7 @@ If the output is "MISSING":
 - Report to the caller: "Database not initialized. Use the `db-init` skill to create it."
 - STOP execution. Do not proceed to further steps.
 
-## Todo 2: Check Index File
+## Step 2: Check Index File
 
 Use the Read tool to read `database/index.md`.
 
@@ -29,7 +29,7 @@ If the file does not exist or returns an error:
 - Report to the caller: "Database index is missing. Use the `db-init` skill to reinitialize."
 - STOP execution. Do not proceed to further steps.
 
-## Todo 3: Validate Index Structure
+## Step 3: Validate Index Structure
 
 Verify the index file contains the expected structure:
 - Should have a `# Database Index` heading
@@ -39,7 +39,7 @@ If the structure is malformed:
 - Report to the caller: "Database index is malformed. Consider reinitializing with `db-init`."
 - STOP execution.
 
-## Todo 4: Report Success
+## Step 4: Report Success
 
 If all checks pass, report to the caller: "Database verified and ready."
 

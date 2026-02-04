@@ -2,7 +2,7 @@
 
 ## Overview
 
-This pattern demonstrates procedural skill execution using TodoWrite. Skills define numbered steps that the agent executes in order, trading autonomy for determinism.
+This pattern demonstrates procedural skill execution using Task tools (TaskCreate, TaskUpdate, TaskList). Skills define numbered steps that the agent executes in order, trading autonomy for determinism.
 
 ## Key Files
 

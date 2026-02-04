@@ -1,6 +1,6 @@
-# Procedural Skills
+Yes, my # Procedural Skills
 
-In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's TodoWrite tool to enforce execution order.
+In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's Task tools (TaskCreate, TaskUpdate, TaskList) to enforce execution order.
 
 It will never be as deterministic as classical code, but it can come darn close while still giving you the flexibility of working with an AI agent.
 
@@ -8,11 +8,11 @@ It will never be as deterministic as classical code, but it can come darn close 
 
 At a high level the pattern is simple.
 
-1. Define Skills with numbered Todo steps
-2. Instruct the Skill to use TodoWrite to create a checklist from those steps
-3. The agent executes steps in order, checking them off as it goes
+1. Define Skills with numbered steps
+2. Instruct the Skill to use TaskCreate to create a task for each step
+3. The agent executes steps in order, using TaskUpdate to mark progress
 
-The magic happens in how you write the Skill. Instead of giving the agent loose instructions and letting it figure out the approach, you give it explicit steps. The agent uses TodoWrite to turn those steps into a Todo list, then works through them sequentially. This creates a predictable execution flow that you can reason about and debug.
+The magic happens in how you write the Skill. Instead of giving the agent loose instructions and letting it figure out the approach, you give it explicit steps. The agent uses TaskCreate to turn those steps into a task list, then works through them sequentially using TaskUpdate to track progress. This creates a predictable execution flow that you can reason about and debug.
 
 ## The Example
 
@@ -72,23 +72,23 @@ The key pillars of this pattern are:
 Take a look at the [`db-read`](.claude/skills/db-read/SKILL.md) Skill. Notice how it's structured:
 
 ```markdown
-## Todo 1: Verify Database
+## Step 1: Verify Database
 Use the Skill tool to invoke the `db-verify` skill...
 
-## Todo 2: Read Index
+## Step 2: Read Index
 Use the Read tool to read `database/index.md`...
 
-## Todo 3: Find Relevant Documents
+## Step 3: Find Relevant Documents
 Search the index for entries matching the user's query...
 
-## Todo 4: Read Documents
+## Step 4: Read Documents
 For each relevant document found, use the Read tool...
 
-## Todo 5: Report Results
+## Step 5: Report Results
 Synthesize the information and report to the user...
 ```
 
-Each Todo is a discrete step with clear instructions. The agent creates a Todo list from these steps and executes them in order. If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the agent improvise.
+Each Step is a discrete unit with clear instructions. The agent uses TaskCreate to create a task for each step, then executes them in order using TaskUpdate to track status. If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the agent improvise.
 
 ### Agent Instructions for Procedural Execution
 
@@ -100,9 +100,9 @@ Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) Agent definition
 1. **Skills Only**: You must ONLY use skills from your skill library. You must
    NEVER attempt to read, write, or navigate files directly outside of skills.
 
-2. **Procedural Execution**: Every skill you invoke uses TodoWrite. You must
-   follow the Todo list exactly as written, in order, checking off items as
-   you complete them.
+2. **Procedural Execution**: Every skill you invoke uses TaskCreate to create
+   a task list. Execute tasks in order, using TaskUpdate to mark each as
+   in_progress when starting and completed when done.
 
 3. **No Improvisation**: If a skill fails or a step cannot be completed, STOP
    and report the issue. Do NOT attempt workarounds or creative solutions.
