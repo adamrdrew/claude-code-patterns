@@ -81,7 +81,6 @@ The key pillars of this pattern are:
 1. A Skill for creating Skills
 2. Agent instructions that bias the agent toward skill reuse and creation. 
 
-
 ### A Skill to Create Skills
 
 Take a look at the [`skill-create`](.claude/skills/skill-create/) Skill. That Skill tells the agent how to create a skill and register it with the `skill-list` Skill, which the agent uses to find what Skills are available. Once the Skill is created, the Agent and any further invocations of it has that Skill available.
@@ -102,6 +101,9 @@ And it does get more capable with each novel request! If you spent a few hours i
 
 ## Be Mindful of what the Agent Creates
 Giving Agents the ability to extend their capabilities by authoring skills is a powerful pattern, but it is also a potentially dangerous one. Make sure you understand your Agent's tool privledges, your project permissions, and review the skills you agent creates!
+
+## Plugin Considerations
+If you were applying this pattern in a plugin you were developing you'd also need to ensure your new skills get added to `.claude-plugin/plugin.json`.
 
 ## Going Further
 The example in this repo is extremely minimal. You can imagine more complex scenarios.
