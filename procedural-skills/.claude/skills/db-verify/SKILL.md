@@ -1,0 +1,45 @@
+---
+name: db-verify
+description: Verify that the database exists and is properly initialized. Returns status indicating whether the database is ready for use. Use this before any operation that assumes the database exists.
+---
+
+# Verify Database
+
+Check that the database directory and index file exist and are properly structured.
+
+Use the TodoWrite tool to create a Todo list and execute the following procedure:
+
+## Todo 1: Check Database Directory
+
+Use the Bash tool to check if the `database/` directory exists:
+
+```bash
+[ -d "database" ] && echo "EXISTS" || echo "MISSING"
+```
+
+If the output is "MISSING":
+- Report to the caller: "Database not initialized. Use the `db-init` skill to create it."
+- STOP execution. Do not proceed to further steps.
+
+## Todo 2: Check Index File
+
+Use the Read tool to read `database/index.md`.
+
+If the file does not exist or returns an error:
+- Report to the caller: "Database index is missing. Use the `db-init` skill to reinitialize."
+- STOP execution. Do not proceed to further steps.
+
+## Todo 3: Validate Index Structure
+
+Verify the index file contains the expected structure:
+- Should have a `# Database Index` heading
+- Should have a `## Documents` section
+
+If the structure is malformed:
+- Report to the caller: "Database index is malformed. Consider reinitializing with `db-init`."
+- STOP execution.
+
+## Todo 4: Report Success
+
+If all checks pass, report to the caller: "Database verified and ready."
+

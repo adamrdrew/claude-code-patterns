@@ -1,0 +1,61 @@
+---
+name: db-read
+description: Find and read documents from the database matching a query. Searches the index for relevant entries, then reads and synthesizes the content. Use this when the user wants to retrieve stored information.
+---
+
+# Read from Database
+
+Find and retrieve documents matching the user's query.
+
+Use the TodoWrite tool to create a Todo list and execute the following procedure:
+
+## Todo 1: Verify Database
+
+Use the Skill tool to invoke the `db-verify` skill.
+
+If verification fails, STOP execution and relay the error message to the user.
+
+## Todo 2: Read Index
+
+Use the Read tool to read `database/index.md`.
+
+Parse the index to extract the list of documents. Each document entry follows the format:
+```
+- [Topic](filename.md) - Description
+```
+
+If the index shows "*No documents yet.*" or has no document entries:
+- Report to the user: "The database is empty. No documents have been stored yet."
+- STOP execution.
+
+## Todo 3: Find Relevant Documents
+
+Analyze the user's query and search the index entries for relevant documents.
+
+Match based on:
+1. Topic name (exact or partial match)
+2. Description keywords
+3. Semantic relevance to the query
+
+Create a list of relevant document filenames to read.
+
+If no relevant documents are found:
+- Report to the user: "No documents found matching your query. Here's what's in the database:" followed by a list of available topics.
+- STOP execution.
+
+## Todo 4: Read Documents
+
+For each relevant document identified in the previous step:
+
+Use the Read tool to read `database/<filename>.md`
+
+Collect the content from all relevant documents.
+
+## Todo 5: Synthesize and Report
+
+Combine the information from all read documents and present a clear, helpful response to the user's query.
+
+- Answer the user's specific question based on the document content
+- Be concise and relevant
+- If the documents don't fully answer the query, note what information is available and what's missing
+
