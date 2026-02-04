@@ -1,0 +1,10 @@
+# Notes Buddy Configuration
+#
+# Copy this file to notes-config.yaml and set your notes path.
+#
+# The path can be:
+#   - Relative to this file: ./notes
+#   - Home directory: ~/Documents/my-notes
+#   - Absolute: /Users/adam/Dropbox/notes
+
+notes_path: ./notes

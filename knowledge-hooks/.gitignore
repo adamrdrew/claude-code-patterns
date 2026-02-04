@@ -1,0 +1,9 @@
+# User configuration (create from notes-config.example.yaml)
+notes-config.yaml
+
+# User notes database (location configured in notes-config.yaml)
+notes/
+
+# macOS
+.DS_Store
+hook-debug.log

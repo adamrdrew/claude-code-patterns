@@ -18,13 +18,22 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 
 4. **Skill Discovery** (`skill-discovery/`) - Dynamic skill discovery for subagents, since Claude Code subagents don't inherit parent skill manifests.
 
+**Combining Patterns:** These patterns complement each other. For example, Agent Skill Creation + Skill Discovery allows skill growth while keeping token overhead low.
+
+## Usage
+
+Invoke agents using the `@"agent-name (agent)"` syntax:
+```
+@"system-buddy (agent)" What processes are using the most memory?
+```
+
 ## Architecture
 
 ### Agent Definitions (`.claude/agents/*.md`)
 - YAML frontmatter: `name`, `description`, `skills`, `tools`, `color`
 - Markdown body contains the agent prompt
 - `skills` array lists which skills the agent can invoke (these are injected at invocation)
-- `tools` specifies available Claude Code tools (Skill, Read, Bash, TaskCreate, TaskUpdate, Edit)
+- `tools` specifies available Claude Code tools (Skill, Read, Bash, Write, Edit, TaskCreate, TaskUpdate, TaskList)
 
 ### Skills (`.claude/skills/<skill-name>/SKILL.md`)
 - YAML frontmatter: `name`, `description`
@@ -42,6 +51,8 @@ Instructions for step 2
 ```
 The agent uses TaskCreate to create tasks for each step, then executes them in order using TaskUpdate to track progress.
 
+**Note:** Some older agents may use `TodoWrite` instead of `TaskCreate`/`TaskUpdate`. Both achieve similar results; Task tools are the newer pattern.
+
 ### Permission Model (`.claude/settings.local.json`)
 - Root level has restricted permissions (only `echo`, `find`)
 - Pattern directories have their own permission scopes tailored to their needs
@@ -49,7 +60,7 @@ The agent uses TaskCreate to create tasks for each step, then executes them in o
 
 ## Key Conventions
 
-- **Skill naming**: Pattern-specific prefix (e.g., `buddy-` for System Buddy agent)
+- **Skill naming**: Pattern-specific prefix (e.g., `buddy-` for System Buddy agent, `db-` for Data Buddy)
 - **Skill list maintenance**: Each pattern has a meta-skill for listing available skills (`skills-list` or `list-skills`) that must be updated when adding new skills
 - **Generated skills**: Dynamically created skills may be gitignored (e.g., `skill-discovery/memory.md`)
 - **Meta-skills**: `skill-create` and `skills-list`/`list-skills` are infrastructure skills for self-improvement and discovery
