@@ -1,35 +1,57 @@
-# ⚙️ Claude Code Design Patterns
+# Claude Code Design Patterns
 
-We have established design patterns in software engineering. We're just starting to discover them for AI Augmented engineering. Like classic Design Patterns, AI design patterns should be general approaches that provide concrete benefits that we can apply in different projects to solve common issues. This repo gathers together some of the design patterns I've discovered.
+Design patterns for AI-augmented engineering with Claude Code. Like classic software design patterns, these are reusable approaches that solve common problems when building agents and skills.
 
-## 🏆 Attribution
-These design patterns are ones that I've *"discovered."* This doesn't mean I'm the first person to ever think of them—likely not. But it does mean I reasoned my way into them independently without knowledge of anyone else applying them. This is why I say *"discovered"* and not *"invented."* I'm happy to add links to other design patterns, or different flavors of these ones that others have discovered independently. 
+## Prerequisites
 
-## 🛠️ Using this Repo
-Each directory in this repo is for a different design pattern. Each is its own Claude Code directory with its own `.claude` directory and `CLAUDE.md`. To explore and play with a design pattern run Claude Code from within its directory, not in this outer parent directory.
+Before diving in, you should have:
+- **Claude Code installed and working** — you can run `claude` and have conversations
+- **Basic familiarity with Claude Code** — you've used tools, read files, run commands
+- **Comfort with Markdown and YAML** — the configuration formats used throughout
 
-##  👇 The Design Patterns
+## A Note on Terminology
 
-### 🎓 Agent Skill Creation
-You can build agents that augment their own abilities by creating skills as they discover what works and what doesn't. This is a great way to create a simple and light-weight self reinforcing system that improves as you use it.
+This repo uses **"Agent"** to refer to custom subagents defined in `.claude/agents/`. The official Claude Code documentation calls these **"subagents"** because they run in isolated contexts, spawned from the main conversation. The terms are interchangeable in this context.
 
-You should exercise caution with this pattern, and keep tabs on what skills your agent is giving itself. That said, it can be a great way to create agents that improve over time.
+## Using This Repo
 
-*Tip: Combine this with Skill Discovery to allow for skill growth while keeping token overhead low!*
+Each directory contains a standalone design pattern with its own `.claude` configuration.
 
-[Agent Skill Creation Demo](agent-skill-creation/README.md)
+**Important:** Run Claude Code from within a pattern directory, not this parent directory.
 
-### 📚 Knowledge Hooks
-You can use hooks to front-load an agent with knowledge. This is a great way to augment what an agent knows on invocation. This is much cheaper cost/token-wise than having the agent go out and get knowledge, and it is more deterministic.
+```bash
+cd knowledge-hooks
+claude
+```
 
-[Knowledge Hooks Demo](knowledge-hooks/README.md)
+**Recommended starting points:**
+- **Knowledge Hooks** — Most self-contained, demonstrates hooks clearly
+- **Procedural Skills** — Shows how to make agents follow exact procedures
 
-### 📋 Procedural Skills
-Agents are great at working autonomously, solving problems, and getting things done. But sometimes you want to have an agent do something in a more deterministic, procedural way. The Procedural Skills pattern lets you trade some autonomy for some determinism. It will never be as deterministic as classic code, but it can come darn close, while still giving you the flexibility of working with an AI agent.
+## The Design Patterns
 
-[Procedural Skills Demo](procedural-skills/README.md)
+### Knowledge Hooks
+Front-load agents with knowledge via hooks on invocation. More token-efficient and deterministic than runtime fetching.
 
-### 🔭 Skill Discovery
-Claude Code subagents do not inherit the skill manifest from the parent conversation; they have to be made aware of what skills are available and what they do. The Skill Discovery pattern gives your agents a dynamic way to discover skills while also being frugal about tokens and cost.
+→ [Knowledge Hooks](knowledge-hooks/README.md)
 
-[Skill Discovery Demo](skill-discovery/README.md)
+### Procedural Skills
+Trade autonomy for determinism. Skills execute step-by-step using Task tools (`TaskCreate`, `TaskUpdate`, `TaskList`) to enforce execution order.
+
+→ [Procedural Skills](procedural-skills/README.md)
+
+### Skill Discovery
+Dynamic skill discovery for subagents. Claude Code subagents don't inherit skill manifests from the parent conversation — this pattern solves that efficiently.
+
+→ [Skill Discovery](skill-discovery/README.md)
+
+### Agent Skill Creation
+Agents that augment their own abilities by creating skills as they learn. A self-reinforcing system that improves over time.
+
+**Caution:** Review the skills your agent creates. Combine with Skill Discovery for growth without token overhead.
+
+→ [Agent Skill Creation](agent-skill-creation/README.md)
+
+## Attribution
+
+These design patterns are ones I've *"discovered."* This doesn't mean I'm the first person to think of them — likely not. But I reasoned my way into them independently. I'm happy to add links to other design patterns or variations that others have discovered.

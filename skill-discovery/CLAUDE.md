@@ -2,12 +2,12 @@
 
 ## Overview
 
-This pattern demonstrates dynamic skill discovery for subagents. Skills are discovered on-demand rather than injected into context at invocation time.
+This pattern demonstrates dynamic skill discovery for subagents. Skills are discovered on-demand rather than injected into context at invocation time, reducing token overhead.
 
 ## Key Files
 
 - `.claude/skills/list-skills/SKILL.md` - Master list of all available skills
-- `.claude/agents/weather-buddy.md` - Example agent that uses skill discovery
+- `.claude/agents/weather-buddy.md` - Example subagent that uses skill discovery
 
 ## Skill Maintenance
 

@@ -1,12 +1,14 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
 ## Project Overview
 
 This is a collection of AI-augmented engineering design patterns for Claude Code. Each directory contains a standalone pattern with its own `.claude` configuration.
 
 **Important:** Run Claude Code from within a pattern directory to explore it, not from this parent directory.
+
+**Terminology:** This repo uses "Agent" to refer to custom subagents defined in `.claude/agents/`. The official Claude Code docs call these "subagents" since they run in isolated contexts.
 
 ## The Four Design Patterns
 
@@ -60,8 +62,11 @@ The agent uses TaskCreate to create tasks for each step, then executes them in o
 
 ## Key Conventions
 
-- **Skill naming**: Pattern-specific prefix (e.g., `buddy-` for System Buddy agent, `db-` for Data Buddy)
-- **Skill list maintenance**: Each pattern has a meta-skill for listing available skills (`skills-list` or `list-skills`) that must be updated when adding new skills
+- **Skill naming**: Pattern-specific prefix (e.g., `buddy-` for System Buddy agent, `db-` for Data Buddy, `notes-` for Notes Buddy)
+- **Skill list maintenance**: Each pattern has a meta-skill for listing available skills:
+  - `skills-list` — Used by Agent Skill Creation, Procedural Skills
+  - `list-skills` — Used by Skill Discovery
+  - These must be updated manually when adding new skills
 - **Generated skills**: Dynamically created skills may be gitignored (e.g., `skill-discovery/memory.md`)
-- **Meta-skills**: `skill-create` and `skills-list`/`list-skills` are infrastructure skills for self-improvement and discovery
-- **Pattern-specific CLAUDE.md**: Individual patterns may have their own CLAUDE.md with pattern-specific instructions
+- **Meta-skills**: `skill-create` (for creating skills) and the list skills (for discovery) are infrastructure skills
+- **Pattern-specific CLAUDE.md**: Each pattern has its own CLAUDE.md with pattern-specific quick-reference

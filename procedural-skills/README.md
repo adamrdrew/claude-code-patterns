@@ -1,8 +1,20 @@
 # Procedural Skills
 
-In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's Task tools (TaskCreate, TaskUpdate, TaskList) to enforce execution order.
+In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's Task tools to enforce execution order.
 
 It will never be as deterministic as classical code, but it can come darn close while still giving you the flexibility of working with an AI agent.
+
+## Task Tools Overview
+
+Claude Code provides three tools for structured task tracking:
+
+| Tool | Purpose |
+|------|---------|
+| `TaskCreate` | Create a new task with a subject and description |
+| `TaskUpdate` | Update task status (`pending` → `in_progress` → `completed`) |
+| `TaskList` | List all tasks and their current status |
+
+When a skill uses these tools, Claude creates explicit tasks and updates their status as it works, creating a visible progress trail. This is the foundation of procedural execution.
 
 ## About the Pattern
 
@@ -16,7 +28,7 @@ The magic happens in how you write the Skill. Instead of giving the agent loose 
 
 ## The Example
 
-In this example we have an Agent called [Data Buddy](.claude/agents/data-buddy.md). It's a simple data librarian that manages a plaintext "database" of markdown files. Users can store, retrieve, update, and delete information, and Data Buddy handles all the bookkeeping.
+In this example we have a subagent called [Data Buddy](.claude/agents/data-buddy.md). It's a simple data librarian that manages a plaintext "database" of markdown files. Users can store, retrieve, update, and delete information, and Data Buddy handles all the bookkeeping.
 
 The database is just a `database/` directory with markdown files and an `index.md` that tracks what's stored where. Nothing fancy, but it demonstrates the pattern well.
 
@@ -67,11 +79,15 @@ The key pillars of this pattern are:
 2. Agent instructions that enforce procedural execution
 3. A skill library that covers all database operations
 
-### Skills as Todo Lists
+### Skills as Task Lists
 
-Take a look at the [`db-read`](.claude/skills/db-read/SKILL.md) Skill. Notice how it's structured:
+Take a look at the [`db-read`](.claude/skills/db-read/SKILL.md) skill. Notice how it's structured:
 
 ```markdown
+Use TaskCreate to create a task for each step below, then execute them
+in order. Mark each task `in_progress` when starting and `completed`
+when done using TaskUpdate.
+
 ## Step 1: Verify Database
 Use the Skill tool to invoke the `db-verify` skill...
 
@@ -88,7 +104,12 @@ For each relevant document found, use the Read tool...
 Synthesize the information and report to the user...
 ```
 
-Each Step is a discrete unit with clear instructions. The agent uses TaskCreate to create a task for each step, then executes them in order using TaskUpdate to track status. If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the agent improvise.
+The skill explicitly instructs the agent to use Task tools. Each step becomes a discrete task that the agent:
+1. Creates with `TaskCreate`
+2. Marks `in_progress` when starting with `TaskUpdate`
+3. Marks `completed` when done with `TaskUpdate`
+
+If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the agent improvise.
 
 ### Agent Instructions for Procedural Execution
 
