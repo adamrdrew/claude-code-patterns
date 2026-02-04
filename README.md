@@ -20,6 +20,10 @@ cd knowledge-hooks
 claude
 ```
 
+You'll find a README.md for each pattern that goes over how it works, how to apply it, further reading, and more. Follow along with the each tutorial, interact with the agents and skills, and get an idea of how they hang together and how you might apply them.
+
+If you find a pattern you'd like to use look for the link to the `teach-claude.md` for that pattern. Paste a link to the `teach-claude.md` for the design pattern you want to use and Claude will get your project wired up for it. I suggest you do it on a branch, just in case after applying it the pattern doesn't seem like a great fit or Claude messed something up.
+
 **Recommended starting points:**
 - **Knowledge Hooks** — Most self-contained, demonstrates hooks clearly
 - **Procedural Skills** — Shows how to make agents follow exact procedures
