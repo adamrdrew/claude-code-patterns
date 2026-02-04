@@ -133,7 +133,7 @@ You can use this pattern to facilitate what I call *"Grow, Don't Build"* where y
 
 There's a lot you can do with this pattern!
 
-## 🚀 Use This Pattern
+## 👷 Use This Pattern
 
 Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
 

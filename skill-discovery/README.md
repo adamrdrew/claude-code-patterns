@@ -152,7 +152,7 @@ The `list-skills` skill in this example is manually maintained. This is simple b
 
 You could also combine Skill Discovery with the Subagent Skill Creation pattern. A subagent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
 
-## 🚀 Use This Pattern
+## 👷 Use This Pattern
 
 Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
 

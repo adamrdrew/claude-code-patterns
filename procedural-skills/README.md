@@ -166,7 +166,7 @@ You could also use Procedural Skills for compliance-sensitive operations where y
 
 The core insight is that you can have AI flexibility and procedural predictability in the same system. You just have to be intentional about where each one applies.
 
-## 🚀 Use This Pattern
+## 👷 Use This Pattern
 
 Want to use this pattern in your own project? Copy this link into Claude Code and it will set up everything for you:
 
