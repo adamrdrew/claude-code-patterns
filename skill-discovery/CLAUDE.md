@@ -1,0 +1,18 @@
+# Skill Discovery Pattern
+
+## Overview
+
+This pattern demonstrates dynamic skill discovery for subagents. Skills are discovered on-demand rather than injected into context at invocation time.
+
+## Key Files
+
+- `.claude/skills/list-skills/SKILL.md` - Master list of all available skills
+- `.claude/agents/weather-buddy.md` - Example agent that uses skill discovery
+
+## Skill Maintenance
+
+**Important:** When adding new skills or observing new skills in the `.claude/skills/` directory, always update the `list-skills` skill (`.claude/skills/list-skills/SKILL.md`) to include the new skill's name and description. This keeps the skill discovery system current.
+
+## Available Skills
+
+See `.claude/skills/list-skills/SKILL.md` for the complete list of available skills.
