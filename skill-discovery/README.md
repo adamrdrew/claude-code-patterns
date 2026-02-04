@@ -1,4 +1,4 @@
-# Skill Discovery
+# 🔭 Skill Discovery
 
 In this pattern we give subagents the ability to discover skills without injecting all skills into the context ahead of time.
 
@@ -8,7 +8,7 @@ Claude Code [allows injecting skills into subagent context](https://code.claude.
 
 The Skill Discovery pattern makes skills available to subagents **on-demand**, without upfront injection.
 
-## About the Pattern
+## 🔍 About the Pattern
 
 At a high level the pattern is simple.
 
@@ -16,7 +16,7 @@ At a high level the pattern is simple.
 2. Inject the skill-listing skill into the subagent (via `skills:` frontmatter)
 3. Instruct the subagent to use the listing skill to discover what's available
 
-## The Example
+## 💡 The Example
 
 In this example we have a subagent called [Weather Buddy](.claude/agents/weather-buddy.md). It helps you get local weather forecasts and answer questions about the weather. It uses Skill Discovery to find and invoke weather and memory skills on-demand.
 
@@ -76,14 +76,14 @@ Here's an example of a more nuanced question:
 
 The subagent interprets the weather data in context of the user's actual question, providing practical advice rather than just raw forecast data.
 
-## Constructing the Pattern
+## 🏗️ Constructing the Pattern
 
 The key pillars of this pattern are:
 
 1. A Skill that lists other Skills
 2. Subagent instructions that direct the subagent to discover Skills before acting
 
-### The List Skills Skill
+### 📋 The List Skills Skill
 
 Take a look at the [`list-skills`](.claude/skills/list-skills/SKILL.md) Skill. It's a simple manifest that lists all available Skills with their names and descriptions. When the subagent invokes this Skill, it learns what capabilities are available without loading the full Skill definitions into context.
 
@@ -103,7 +103,7 @@ The Skill is organized by category:
 
 This gives the subagent enough information to know what Skills exist and what they do, without loading every Skill definition upfront.
 
-### Subagent Instructions for Skill Discovery
+### 🤖 Subagent Instructions for Skill Discovery
 
 Have a look at the [`weather-buddy`](.claude/agents/weather-buddy.md) subagent definition. The key section is:
 
@@ -116,7 +116,7 @@ you MUST invoke this skill to discover what skills are available to you.
 
 The subagent is instructed to always discover Skills first, then use only the Skills that appear in the list. This creates a lazy-loading pattern where Skill definitions are only loaded when the subagent actually invokes them.
 
-## Skill Discovery vs Skill Injection
+## ⚖️ Skill Discovery vs Skill Injection
 
 | Approach | Tokens at Invocation | Tokens Per Skill Use |
 |----------|---------------------|---------------------|
@@ -125,7 +125,7 @@ The subagent is instructed to always discover Skills first, then use only the Sk
 
 Skill Injection is simpler and works well for subagents with a small number of small Skills. Skill Discovery is more efficient when you have many Skills or large Skill definitions, since you only pay for the Skills you actually use.
 
-## A Note on Skill Injection
+## 💉 A Note on Skill Injection
 
 Claude Code also supports injecting skills directly into subagents via the `skills:` frontmatter field:
 
@@ -140,7 +140,7 @@ skills:
 
 This loads the full skill content at invocation time. Use **Skill Injection** when you have a small number of small skills. Use **Skill Discovery** when you have many skills or large skill definitions — you only pay for what you use.
 
-## Going Further
+## 🚀 Going Further
 
 The `list-skills` skill in this example is manually maintained. This is simple but error-prone — add a skill, forget to update the list.
 
@@ -152,7 +152,7 @@ The `list-skills` skill in this example is manually maintained. This is simple b
 
 You could also combine Skill Discovery with the Subagent Skill Creation pattern. A subagent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
 
-## Further Reading
+## 📖 Further Reading
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
 - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation with skill preloading info

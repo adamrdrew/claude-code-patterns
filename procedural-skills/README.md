@@ -1,10 +1,10 @@
-# Procedural Skills
+# 📋 Procedural Skills
 
 In this pattern we trade some subagent autonomy for determinism. AI subagents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the subagent follows exactly, using Claude Code's Task tools to enforce execution order.
 
 It will never be as deterministic as classical code, but it can come darn close while still giving you the flexibility of working with an AI subagent.
 
-## Task Tools Overview
+## 🛠️ Task Tools Overview
 
 Claude Code provides three tools for structured task tracking:
 
@@ -16,7 +16,7 @@ Claude Code provides three tools for structured task tracking:
 
 When a skill uses these tools, Claude creates explicit tasks and updates their status as it works, creating a visible progress trail. This is the foundation of procedural execution.
 
-## About the Pattern
+## 🔍 About the Pattern
 
 At a high level the pattern is simple.
 
@@ -26,7 +26,7 @@ At a high level the pattern is simple.
 
 The magic happens in how you write the Skill. Instead of giving the subagent loose instructions and letting it figure out the approach, you give it explicit steps. The subagent uses TaskCreate to turn those steps into a task list, then works through them sequentially using TaskUpdate to track progress. This creates a predictable execution flow that you can reason about and debug.
 
-## The Example
+## 💡 The Example
 
 In this example we have a subagent called [Data Buddy](.claude/agents/data-buddy.md). It's a simple data librarian that manages a plaintext "database" of markdown files. Users can store, retrieve, update, and delete information, and Data Buddy handles all the bookkeeping.
 
@@ -71,7 +71,7 @@ What makes this interesting isn't what Data Buddy does, it's *how* it does it. E
 
 The subagent never skips steps, never takes shortcuts, never tries to be clever. It follows the procedure.
 
-## Constructing the Pattern
+## 🏗️ Constructing the Pattern
 
 The key pillars of this pattern are:
 
@@ -79,7 +79,7 @@ The key pillars of this pattern are:
 2. Subagent instructions that enforce procedural execution
 3. A skill library that covers all database operations
 
-### Skills as Task Lists
+### 📝 Skills as Task Lists
 
 Take a look at the [`db-read`](.claude/skills/db-read/SKILL.md) skill. Notice how it's structured:
 
@@ -111,7 +111,7 @@ The skill explicitly instructs the subagent to use Task tools. Each step becomes
 
 If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the subagent improvise.
 
-### Subagent Instructions for Procedural Execution
+### 🤖 Subagent Instructions for Procedural Execution
 
 Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) subagent definition. The critical section is:
 
@@ -131,7 +131,7 @@ Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) subagent definit
 
 This is the key constraint. The subagent is explicitly forbidden from going off-script. It can only act through skills, and skills are procedural. This creates a predictable system where you know exactly what the subagent will do for any given request.
 
-### The Skill Library
+### 📚 The Skill Library
 
 The skill library covers all database operations:
 
@@ -146,7 +146,7 @@ The skill library covers all database operations:
 
 Each skill is self-contained and procedural. Skills can invoke other skills (like `db-read` invoking `db-verify` first), creating composable procedures.
 
-## Why Not Just Use Code?
+## 🤔 Why Not Just Use Code?
 
 Fair question. If you want determinism, why not just write a Python script?
 
@@ -154,7 +154,7 @@ The answer is that Procedural Skills give you *constrained flexibility*. The sub
 
 For Data Buddy, this means users can ask questions in natural language ("What pets do I have?", "Tell me about Luna", "Do I have any dogs?") and the subagent figures out the right skill to use. But once the skill is invoked, execution is predictable.
 
-## Going Further
+## 🚀 Going Further
 
 The example in this repo is minimal. You can imagine more sophisticated applications.
 
@@ -166,7 +166,7 @@ You could also use Procedural Skills for compliance-sensitive operations where y
 
 The core insight is that you can have AI flexibility and procedural predictability in the same system. You just have to be intentional about where each one applies.
 
-## Further Reading
+## 📖 Further Reading
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
 - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation
