@@ -16,3 +16,9 @@ This pattern demonstrates dynamic skill discovery for subagents. Skills are disc
 ## Available Skills
 
 See `.claude/skills/list-skills/SKILL.md` for the complete list of available skills.
+
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation with skill preloading info
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference

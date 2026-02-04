@@ -1,6 +1,6 @@
-# Agent Skill Creation
+# Subagent Skill Creation
 
-In this pattern we define a subagent that enhances its own abilities by adding to its skill repertoire. Agent Skill Creation lets you build agents that learn and improve over time in a structured way. Because the agent learns by creating skills, the solution is composable (skills can call other skills) and human-interactable (you can invoke the same skills the agent created).
+In this pattern we define a subagent that enhances its own abilities by adding to its skill repertoire. Subagent Skill Creation lets you build subagents that learn and improve over time in a structured way. Because the subagent learns by creating skills, the solution is composable (skills can call other skills) and human-interactable (you can invoke the same skills the subagent created).
 
 ## Before You Dive In
 
@@ -28,7 +28,7 @@ In this example we have a subagent called [System Buddy](.claude/agents/system-b
 This is the standard macOS home directory where your personal files, documents, desktop, downloads, and application preferences are stored.  
 ```
 
-Maybe not the most interesting subagent in the world, but if you look at the `.claude/skills` directory you'll see something interesting over time:
+Not the most interesting subagent in the world, but if you look at the `.claude/skills` directory you'll see something interesting over time:
 
 Before asking System Buddy about webservers:
 ```bash
@@ -73,23 +73,23 @@ drwxr-xr-x@  3 adam  staff   96 Feb  3 12:20 buddy-system-status
 drwxr-xr-x@  3 adam  staff   96 Feb  3 12:30 buddy-terminate-chrome
 ```
 
-The agent created a new skills called `buddy-check-listening-ports`! It augmented its abilities.
+The subagent created a new skill called `buddy-check-listening-ports`! It augmented its abilities.
 
 So, how did we do this?
 
-## Contructing the Pattern
+## Constructing the Pattern
 
 The key pillars of this pattern are:
 
 1. A Skill for creating Skills
-2. Agent instructions that bias the agent toward skill reuse and creation. 
+2. Subagent instructions that bias the subagent toward skill reuse and creation. 
 
 ### A Skill to Create Skills
 
-Take a look at the [`skill-create`](.claude/skills/skill-create/) Skill. That Skill tells the agent how to create a skill and register it with the `skill-list` Skill, which the agent uses to find what Skills are available. Once the Skill is created, the Agent and any further invocations of it has that Skill available.
+Take a look at the [`skill-create`](.claude/skills/skill-create/) Skill. That Skill tells the subagent how to create a skill and register it with the `skill-list` Skill, which the subagent uses to find what Skills are available. Once the Skill is created, the subagent and any further invocations of it has that Skill available.
 
-### Bias the Agent Toward Skill Re-use and Creation
-Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) Agent definition. Here's Claude's summation of the design:
+### Bias the Subagent Toward Skill Re-use and Creation
+Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) subagent definition. Here's Claude's summation of the design:
 
 > The System Buddy follows a check-first, learn-after loop:
 >
@@ -98,13 +98,13 @@ Have a look at the [`system-buddy`](.claude/agents/system-buddy.md) Agent defini
 > 3. Plan & execute → Handle remaining work with bash commands
 > 4. Create skills → Codify any new procedures discovered into reusable skills
 >
-> The key principle: always check for existing skills before doing work, always create skills after figuring something out. This creates a virtuous cycle where the agent gets more capable with each novel request.
+> The key principle: always check for existing skills before doing work, always create skills after figuring something out. This creates a virtuous cycle where the subagent gets more capable with each novel request.
 
-And it does get more capable with each novel request! If you spent a few hours interacting with this agent you could build up a solid library of reusable and composable skills.
+And it does get more capable with each novel request! If you spent a few hours interacting with this subagent you could build up a solid library of reusable and composable skills.
 
-## Be Mindful of What the Agent Creates
+## Be Mindful of What the Subagent Creates
 
-Giving agents the ability to extend their capabilities by authoring skills is powerful but requires oversight.
+Giving subagents the ability to extend their capabilities by authoring skills is powerful but requires oversight.
 
 **What to watch for:**
 
@@ -127,9 +127,16 @@ If you're building a plugin that uses this pattern, created skills need to be re
 ## Going Further
 The example in this repo is extremely minimal. You can imagine more complex scenarios.
 
-You could have a model where the active Agent uses skill composition to finish its work, but if a Skill isn't available it opens a ticket for skill creation. Another agent could come along and consume the ticket and create the ticket. This could lead to better seperation of concerns. 
+You could have a model where the active subagent uses skill composition to finish its work, but if a Skill isn't available it opens a ticket for skill creation. Another subagent could come along and consume the ticket and create the skill. This could lead to better separation of concerns.
 
-You can use this pattern to fasciliate what I call *"Grow, Don't Build"* where you *"grow"* an Agent to suit your needs rather than attempt to build one up front. If you combine Agent Skill Creation with giving the Agent the ability to edit itself, you can create extremely rich and complex Agents and skill libraries starting from little more than "You are a helpful agent ready to learn. For anything you learn to do, create a skill." That and a simple skill creation bootstrap can get you from nothing to a rich agent and skill library with no Big Design Up Front.
+You can use this pattern to facilitate what I call *"Grow, Don't Build"* where you *"grow"* a subagent to suit your needs rather than attempt to build one up front. If you combine Subagent Skill Creation with giving the subagent the ability to edit itself, you can create extremely rich and complex subagents and skill libraries starting from little more than "You are a helpful subagent ready to learn. For anything you learn to do, create a skill." That and a simple skill creation bootstrap can get you from nothing to a rich subagent and skill library with no Big Design Up Front.
 
 There's a lot you can do with this pattern!
+
+## Further Reading
+
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Official Claude Code subagents documentation
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills) - How to create and use skills
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference
+- [Anthropic Skills repository](https://github.com/anthropics/skills) - Official skills examples
 

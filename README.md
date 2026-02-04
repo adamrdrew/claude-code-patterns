@@ -1,6 +1,6 @@
 # Claude Code Design Patterns
 
-Design patterns for AI-augmented engineering with Claude Code. Like classic software design patterns, these are reusable approaches that solve common problems when building agents and skills.
+Design patterns for AI-augmented engineering with Claude Code. Like classic software design patterns, these are reusable approaches that solve common problems when building subagents and skills.
 
 ## Prerequisites
 
@@ -8,10 +8,6 @@ Before diving in, you should have:
 - **Claude Code installed and working** — you can run `claude` and have conversations
 - **Basic familiarity with Claude Code** — you've used tools, read files, run commands
 - **Comfort with Markdown and YAML** — the configuration formats used throughout
-
-## A Note on Terminology
-
-This repo uses **"Agent"** to refer to custom subagents defined in `.claude/agents/`. The official Claude Code documentation calls these **"subagents"** because they run in isolated contexts, spawned from the main conversation. The terms are interchangeable in this context.
 
 ## Using This Repo
 
@@ -31,7 +27,7 @@ claude
 ## The Design Patterns
 
 ### Knowledge Hooks
-Front-load agents with knowledge via hooks on invocation. More token-efficient and deterministic than runtime fetching.
+Front-load subagents with knowledge via hooks on invocation. More token-efficient and deterministic than runtime fetching.
 
 → [Knowledge Hooks](knowledge-hooks/README.md)
 
@@ -45,12 +41,12 @@ Dynamic skill discovery for subagents. Claude Code subagents don't inherit skill
 
 → [Skill Discovery](skill-discovery/README.md)
 
-### Agent Skill Creation
-Agents that augment their own abilities by creating skills as they learn. A self-reinforcing system that improves over time.
+### Subagent Skill Creation
+Subagents that augment their own abilities by creating skills as they learn. A self-reinforcing system that improves over time.
 
-**Caution:** Review the skills your agent creates. Combine with Skill Discovery for growth without token overhead.
+**Caution:** Review the skills your subagent creates. Combine with Skill Discovery for growth without token overhead.
 
-→ [Agent Skill Creation](agent-skill-creation/README.md)
+→ [Subagent Skill Creation](agent-skill-creation/README.md)
 
 ## Attribution
 
