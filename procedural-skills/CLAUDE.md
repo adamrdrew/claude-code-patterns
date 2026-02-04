@@ -23,3 +23,9 @@ The `database/` directory (gitignored) contains:
 
 See `.claude/skills/skills-list/SKILL.md` for the complete list of available skills.
 
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation
+- [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works) - Understanding Claude Code architecture
+

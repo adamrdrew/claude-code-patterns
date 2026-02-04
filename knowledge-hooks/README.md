@@ -125,7 +125,7 @@ Simple YAML. Can be a relative path, absolute path, or use `~` for home director
 3. Reads the notes index and all note files
 4. Outputs everything as formatted markdown
 
-Whatever the script writes to stdout gets injected into the Agent's context. The script handles edge cases — missing config, uninitialized database — and outputs helpful messages for those states.
+Whatever the script writes to stdout gets injected into the subagent's context. The script handles edge cases — missing config, uninitialized database — and outputs helpful messages for those states.
 
 ### Hook Configuration
 
@@ -153,7 +153,7 @@ Whatever the script writes to stdout gets injected into the Agent's context. The
 Key points:
 
 - **`SubagentStart`** — The event that fires when a subagent is spawned (not `AgentStart` or similar)
-- **`matcher`** — A regex pattern matching the agent name. Use `"*"` to match all agents, or a specific name like `"notes-buddy"`
+- **`matcher`** — A regex pattern matching the subagent name. Use `"*"` to match all subagents, or a specific name like `"notes-buddy"`
 - **`$CLAUDE_PROJECT_DIR`** — Environment variable for the project root; ensures paths resolve correctly
 - **`timeout`** — Optional; milliseconds before the hook times out (default is 600000)
 
@@ -217,7 +217,7 @@ Hook behavior depends on the exit code:
 | `2` | Blocking error — for events that support blocking (like `PreToolUse`), this prevents the action |
 | Other | Non-blocking error — stderr is shown in verbose mode, execution continues |
 
-For `SubagentStart` hooks like ours, exit code 0 with proper JSON injects context. Exit code 2 would show an error but can't block agent startup.
+For `SubagentStart` hooks like ours, exit code 0 with proper JSON injects context. Exit code 2 would show an error but can't block subagent startup.
 
 **Debugging Hooks:**
 
@@ -226,7 +226,7 @@ If your hook isn't working:
 1. Add temporary logging to verify the hook fires: `echo "Hook fired" >> /tmp/hook-debug.log`
 2. Log your JSON output before printing it to verify the structure
 3. Test your JSON output with `jq` to verify it's valid: `echo "$output" | jq .`
-4. Check that the `matcher` in settings.json matches your agent name exactly
+4. Check that the `matcher` in settings.json matches your subagent name exactly
 5. Run Claude Code with `claude --debug` to see hook execution details
 
 ## Knowledge Hooks vs Runtime Fetching
@@ -260,3 +260,10 @@ The hook in this example runs a bash script, but hooks can run any executable. Y
 You could also combine Knowledge Hooks with the Skill Discovery pattern. Have the hook inject a curated summary, with skills available for when the subagent needs to dig deeper. Best of both worlds — efficient context for common cases, full access when needed.
 
 The key insight is that hooks let you front-load work that would otherwise happen at runtime. Anything you can compute before the subagent starts is context you don't have to spend tokens fetching later.
+
+## Further Reading
+
+- [Hooks reference](https://code.claude.com/docs/en/hooks) - Official Claude Code hooks documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation with preload skills info
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference
+- [How to configure hooks](https://claude.com/blog/how-to-configure-hooks) - Anthropic blog post on hooks

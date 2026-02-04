@@ -1,8 +1,8 @@
 # Procedural Skills
 
-In this pattern we trade some agent autonomy for determinism. AI agents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the agent follows exactly, using Claude Code's Task tools to enforce execution order.
+In this pattern we trade some subagent autonomy for determinism. AI subagents are great at figuring things out and getting creative, but sometimes you want things done in a specific, predictable order. Procedural Skills let you define step-by-step procedures that the subagent follows exactly, using Claude Code's Task tools to enforce execution order.
 
-It will never be as deterministic as classical code, but it can come darn close while still giving you the flexibility of working with an AI agent.
+It will never be as deterministic as classical code, but it can come darn close while still giving you the flexibility of working with an AI subagent.
 
 ## Task Tools Overview
 
@@ -24,7 +24,7 @@ At a high level the pattern is simple.
 2. Instruct the Skill to use TaskCreate to create a task for each step
 3. The agent executes steps in order, using TaskUpdate to mark progress
 
-The magic happens in how you write the Skill. Instead of giving the agent loose instructions and letting it figure out the approach, you give it explicit steps. The agent uses TaskCreate to turn those steps into a task list, then works through them sequentially using TaskUpdate to track progress. This creates a predictable execution flow that you can reason about and debug.
+The magic happens in how you write the Skill. Instead of giving the subagent loose instructions and letting it figure out the approach, you give it explicit steps. The subagent uses TaskCreate to turn those steps into a task list, then works through them sequentially using TaskUpdate to track progress. This creates a predictable execution flow that you can reason about and debug.
 
 ## The Example
 
@@ -69,14 +69,14 @@ What makes this interesting isn't what Data Buddy does, it's *how* it does it. E
 4. Read the specific document(s)
 5. Synthesize and report
 
-The agent never skips steps, never takes shortcuts, never tries to be clever. It follows the procedure.
+The subagent never skips steps, never takes shortcuts, never tries to be clever. It follows the procedure.
 
 ## Constructing the Pattern
 
 The key pillars of this pattern are:
 
 1. Skills written as numbered Todo steps
-2. Agent instructions that enforce procedural execution
+2. Subagent instructions that enforce procedural execution
 3. A skill library that covers all database operations
 
 ### Skills as Task Lists
@@ -104,16 +104,16 @@ For each relevant document found, use the Read tool...
 Synthesize the information and report to the user...
 ```
 
-The skill explicitly instructs the agent to use Task tools. Each step becomes a discrete task that the agent:
+The skill explicitly instructs the subagent to use Task tools. Each step becomes a discrete task that the subagent:
 1. Creates with `TaskCreate`
 2. Marks `in_progress` when starting with `TaskUpdate`
 3. Marks `completed` when done with `TaskUpdate`
 
-If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the agent improvise.
+If a step fails (like the database not existing), the procedure handles it explicitly rather than letting the subagent improvise.
 
-### Agent Instructions for Procedural Execution
+### Subagent Instructions for Procedural Execution
 
-Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) Agent definition. The critical section is:
+Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) subagent definition. The critical section is:
 
 ```markdown
 ## Critical Operating Rules
@@ -129,7 +129,7 @@ Have a look at the [`data-buddy`](.claude/agents/data-buddy.md) Agent definition
    and report the issue. Do NOT attempt workarounds or creative solutions.
 ```
 
-This is the key constraint. The agent is explicitly forbidden from going off-script. It can only act through skills, and skills are procedural. This creates a predictable system where you know exactly what the agent will do for any given request.
+This is the key constraint. The subagent is explicitly forbidden from going off-script. It can only act through skills, and skills are procedural. This creates a predictable system where you know exactly what the subagent will do for any given request.
 
 ### The Skill Library
 
@@ -150,19 +150,26 @@ Each skill is self-contained and procedural. Skills can invoke other skills (lik
 
 Fair question. If you want determinism, why not just write a Python script?
 
-The answer is that Procedural Skills give you *constrained flexibility*. The agent still interprets natural language, figures out which skill to use, and synthesizes results. You get the benefits of AI (natural language interface, intelligent synthesis) with the predictability of procedures (known execution paths, debuggable steps).
+The answer is that Procedural Skills give you *constrained flexibility*. The subagent still interprets natural language, figures out which skill to use, and synthesizes results. You get the benefits of AI (natural language interface, intelligent synthesis) with the predictability of procedures (known execution paths, debuggable steps).
 
-For Data Buddy, this means users can ask questions in natural language ("What pets do I have?", "Tell me about Luna", "Do I have any dogs?") and the agent figures out the right skill to use. But once the skill is invoked, execution is predictable.
+For Data Buddy, this means users can ask questions in natural language ("What pets do I have?", "Tell me about Luna", "Do I have any dogs?") and the subagent figures out the right skill to use. But once the skill is invoked, execution is predictable.
 
 ## Going Further
 
 The example in this repo is minimal. You can imagine more sophisticated applications.
 
-You could build a procedural agent for managing infrastructure, where each operation (deploy, rollback, scale) follows an exact runbook. The agent interprets what you want, but execution follows your documented procedures.
+You could build a procedural subagent for managing infrastructure, where each operation (deploy, rollback, scale) follows an exact runbook. The subagent interprets what you want, but execution follows your documented procedures.
 
-You could combine Procedural Skills with the Agent Skill Creation pattern, but with a twist: the agent can create new skills, but only procedural ones. This gives you a system that grows its capabilities while maintaining predictability.
+You could combine Procedural Skills with the Subagent Skill Creation pattern, but with a twist: the subagent can create new skills, but only procedural ones. This gives you a system that grows its capabilities while maintaining predictability.
 
 You could also use Procedural Skills for compliance-sensitive operations where you need an audit trail. Each Todo step can log what it did, creating a record of exactly how an operation was performed.
 
 The core insight is that you can have AI flexibility and procedural predictability in the same system. You just have to be intentional about where each one applies.
+
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation
+- [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works) - Understanding Claude Code architecture
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference
 

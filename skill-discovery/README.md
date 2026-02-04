@@ -74,18 +74,18 @@ Here's an example of a more nuanced question:
   so roads should be clear well before your party.
 ```
 
-The Agent interprets the weather data in context of the user's actual question, providing practical advice rather than just raw forecast data.
+The subagent interprets the weather data in context of the user's actual question, providing practical advice rather than just raw forecast data.
 
 ## Constructing the Pattern
 
 The key pillars of this pattern are:
 
 1. A Skill that lists other Skills
-2. Agent instructions that direct the Agent to discover Skills before acting
+2. Subagent instructions that direct the subagent to discover Skills before acting
 
 ### The List Skills Skill
 
-Take a look at the [`list-skills`](.claude/skills/list-skills/SKILL.md) Skill. It's a simple manifest that lists all available Skills with their names and descriptions. When the Agent invokes this Skill, it learns what capabilities are available without loading the full Skill definitions into context.
+Take a look at the [`list-skills`](.claude/skills/list-skills/SKILL.md) Skill. It's a simple manifest that lists all available Skills with their names and descriptions. When the subagent invokes this Skill, it learns what capabilities are available without loading the full Skill definitions into context.
 
 The Skill is organized by category:
 
@@ -101,11 +101,11 @@ The Skill is organized by category:
 **update-memory** - Add or update a key-value pair...
 ```
 
-This gives the Agent enough information to know what Skills exist and what they do, without loading every Skill definition upfront.
+This gives the subagent enough information to know what Skills exist and what they do, without loading every Skill definition upfront.
 
-### Agent Instructions for Skill Discovery
+### Subagent Instructions for Skill Discovery
 
-Have a look at the [`weather-buddy`](.claude/agents/weather-buddy.md) Agent definition. The key section is:
+Have a look at the [`weather-buddy`](.claude/agents/weather-buddy.md) subagent definition. The key section is:
 
 ```markdown
 ## Skill Discovery
@@ -114,7 +114,7 @@ You have access to the `list-skills` skill. Before attempting any operation,
 you MUST invoke this skill to discover what skills are available to you.
 ```
 
-The Agent is instructed to always discover Skills first, then use only the Skills that appear in the list. This creates a lazy-loading pattern where Skill definitions are only loaded when the Agent actually invokes them.
+The subagent is instructed to always discover Skills first, then use only the Skills that appear in the list. This creates a lazy-loading pattern where Skill definitions are only loaded when the subagent actually invokes them.
 
 ## Skill Discovery vs Skill Injection
 
@@ -123,7 +123,7 @@ The Agent is instructed to always discover Skills first, then use only the Skill
 | **Skill Injection** | High (all Skill definitions loaded) | None (already loaded) |
 | **Skill Discovery** | Low (only list-skills injected) | Per-Skill (loaded on demand) |
 
-Skill Injection is simpler and works well for Agents with a small number of small Skills. Skill Discovery is more efficient when you have many Skills or large Skill definitions, since you only pay for the Skills you actually use.
+Skill Injection is simpler and works well for subagents with a small number of small Skills. Skill Discovery is more efficient when you have many Skills or large Skill definitions, since you only pay for the Skills you actually use.
 
 ## A Note on Skill Injection
 
@@ -150,4 +150,11 @@ The `list-skills` skill in this example is manually maintained. This is simple b
 2. **Build step** — Add a script that regenerates `list-skills` whenever skills change
 3. **Hook-based** — Use a `SessionStart` hook to rebuild the manifest
 
-You could also combine Skill Discovery with the Agent Skill Creation pattern. An agent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
+You could also combine Skill Discovery with the Subagent Skill Creation pattern. A subagent that can both discover and create skills becomes a self-improving system that grows its capabilities over time while keeping context costs under control.
+
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation with skill preloading info
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference
+- [Anthropic Skills repository](https://github.com/anthropics/skills) - Official skills examples

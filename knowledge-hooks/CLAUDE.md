@@ -8,7 +8,7 @@ This pattern demonstrates using hooks to inject knowledge into a subagent's cont
 
 - `.claude/settings.json` - Hook configuration (SubagentStart hook for notes-buddy)
 - `.claude/hooks/inject-notes.sh` - Script that reads config and injects notes database
-- `.claude/agents/notes-buddy.md` - The notes assistant agent
+- `.claude/agents/notes-buddy.md` - The notes assistant subagent
 - `notes-config.example.yaml` - Template for user configuration
 
 ## Setup
@@ -50,3 +50,9 @@ The notes directory (wherever configured) contains:
 - **notes-read** - Read a specific note
 - **notes-list** - List all notes
 - **notes-delete** - Delete a note
+
+## Further Reading
+
+- [Hooks reference](https://code.claude.com/docs/en/hooks) - Official Claude Code hooks documentation
+- [Create custom subagents](https://code.claude.com/docs/en/sub-agents) - Subagents documentation
+- [Claude Code settings](https://code.claude.com/docs/en/settings) - Configuration reference
