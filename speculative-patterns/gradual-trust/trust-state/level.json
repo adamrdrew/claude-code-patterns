@@ -1,0 +1,9 @@
+{
+  "level": 0,
+  "name": "Observer",
+  "successes_at_level": 0,
+  "total_successes": 0,
+  "failures": 0,
+  "last_escalation": null,
+  "last_operation": null
+}
