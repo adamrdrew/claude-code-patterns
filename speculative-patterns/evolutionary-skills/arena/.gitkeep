@@ -1,0 +1,6 @@
+# Arena Directory
+
+This directory contains skill evolution artifacts:
+- competitors/ - All skill versions being tested
+- results/ - Competition records
+- champions/ - Current best versions of each skill

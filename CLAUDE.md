@@ -8,7 +8,9 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 
 **Important:** Run Claude Code from within a pattern directory to explore it, not from this parent directory.
 
-## The Four Design Patterns
+## Design Patterns
+
+### Foundation Patterns (Established)
 
 1. **Subagent Skill Creation** (`agent-skill-creation/`) - Subagents that augment their own abilities by creating skills as they discover effective approaches. Self-reinforcing system that improves over time.
 
@@ -18,7 +20,28 @@ This is a collection of AI-augmented engineering design patterns for Claude Code
 
 4. **Skill Discovery** (`skill-discovery/`) - Dynamic skill discovery for subagents, since Claude Code subagents don't inherit parent skill manifests.
 
-**Combining Patterns:** These patterns complement each other. For example, Subagent Skill Creation + Skill Discovery allows skill growth while keeping token overhead low.
+### Speculative Patterns (Experimental)
+
+Located in `speculative-patterns/` — these are experimental patterns not yet validated in real projects.
+
+5. **Dialectic Agents** (`speculative-patterns/dialectic-agents/`)
+6. **Reflexive Monitoring** (`speculative-patterns/reflexive-monitoring/`)
+7. **Evolutionary Skills** (`speculative-patterns/evolutionary-skills/`)
+8. **Constraint Inheritance** (`speculative-patterns/constraint-inheritance/`)
+9. **Session Archaeology** (`speculative-patterns/session-archaeology/`)
+10. **Capability Synthesis** (`speculative-patterns/capability-synthesis/`)
+11. **Gradual Trust** (`speculative-patterns/gradual-trust/`)
+12. **Deliberate Forgetting** (`speculative-patterns/deliberate-forgetting/`)
+13. **Adversarial Testing** (`speculative-patterns/adversarial-testing/`)
+14. **Ceremony Patterns** (`speculative-patterns/ceremony-patterns/`)
+
+See `speculative-patterns/README.md` for details on each pattern.
+
+**Combining Patterns:** These patterns complement each other. For example:
+- Subagent Skill Creation + Skill Discovery = skill growth with low token overhead
+- Constraint Inheritance + Adversarial Testing = governance with continuous hardening
+- Session Archaeology + Deliberate Forgetting = learning that stays lean
+- Dialectic Agents + Ceremony Patterns = high-stakes decisions with full deliberation
 
 ## Usage
 
